@@ -1,7 +1,9 @@
 {
   "name": "spotify-nextjs",
   "version": "0.0.0",
-  "scripts": {},
+  "scripts": {
+    "lint": "biome check --write"
+  },
   "license": "UNLICENSED",
   "devEngines": {
     "packageManager": {
@@ -10,5 +12,8 @@
       "onFail": "download"
     }
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "2.5.8"
+  }
 }
