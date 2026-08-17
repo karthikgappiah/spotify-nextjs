@@ -1,0 +1,4 @@
+# NAME: Git Ignore
+# PATH: /.gitignore
+
+.DS_Store
