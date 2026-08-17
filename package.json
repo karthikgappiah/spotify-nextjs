@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "biome check --write",
-    "lint:ci": "biome ci .",
+    "lint:ci": "biome ci",
+    "typecheck": "next typegen && tsc --noEmit",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
@@ -19,7 +20,10 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
-    "lefthook": "^2.1.10"
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "lefthook": "^2.1.10",
+    "typescript": "7.0.2"
   },
   "dependencies": {
     "next": "^16.3.1",
