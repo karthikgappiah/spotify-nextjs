@@ -1,5 +1,6 @@
 import { Geist } from "next/font/google";
 import type { ReactNode } from "react";
+import { Providers } from "@/src/components/providers";
 import "@/src/styles/app.css";
 
 const geist = Geist({
@@ -14,8 +15,10 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={geist.variable}>
-      <body className="flex min-h-dvh flex-col">{children}</body>
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
+      <body className="flex min-h-dvh flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
