@@ -23,7 +23,15 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Run Biome
         run: pnpm lint:ci
+      - name: Validate environment variables
+        # INFO: `next.config.ts` imports the env module, so typegen triggers validation.
+        # Unlike `pnpm typecheck`, this runs without SKIP_ENV_VALIDATION,
+        # so a missing or malformed variable fails here.
+        run: pnpm exec next typegen
+        env:
+          # WARN: CI supplies placeholder (not real) values,
+          # so any present-but-wrong variable in Vercel will not be caught.
+          BETTER_AUTH_SECRET: UFKwAo6mAjM7y3cnV5Bsmi08RBMfpfqIiPqi7Bo1908=
+          BETTER_AUTH_URL: http://127.0.0.1:3000
       - name: Run typecheck
         run: pnpm typecheck
-        env:
-          DATABASE_URL: "postgresql://user:password@localhost:5432/database"
