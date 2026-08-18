@@ -4,5 +4,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
+  },
+  "json.schemaDownload.trustedDomains": {
+    "https://ui.shadcn.com/schema.json": true
   }
 }
