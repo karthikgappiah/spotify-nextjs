@@ -1,6 +1,6 @@
 export default function LandingPage() {
   return (
-    <main className="flex items-center justify-center grow">
+    <main className="flex grow items-center justify-center">
       <h1>TODO</h1>
     </main>
   );
