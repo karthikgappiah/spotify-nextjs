@@ -12,16 +12,31 @@ import {
   Field,
   FieldDescription,
   FieldGroup,
-  FieldLabel,
   FieldSeparator,
 } from "@/src/components/ui/field";
-import { Input } from "@/src/components/ui/input";
+import { useAppForm } from "@/src/library/forms/app-form";
+import { login_form_options } from "@/src/library/forms/auth";
 import { cn } from "@/src/styles/utilities";
 
 export function LoginForm({ className, ...props }: ComponentProps<"div">) {
+  const form = useAppForm({
+    ...login_form_options,
+    onSubmit: ({ value }) => {
+      // TODO: replace with the real sign-in call.
+      console.log("login", value);
+    },
+  });
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form>
+      <form
+        noValidate
+        onSubmit={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          void form.handleSubmit();
+        }}
+      >
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <Link
@@ -39,22 +54,34 @@ export function LoginForm({ className, ...props }: ComponentProps<"div">) {
               <Link href="/auth/signup">Sign up</Link>
             </FieldDescription>
           </div>
+          <form.AppField name="email">
+            {(field) => (
+              <field.TextField
+                label="Email"
+                type="email"
+                autoComplete="email"
+                placeholder="example@email.com"
+                className="placeholder:text-sm"
+                required
+              />
+            )}
+          </form.AppField>
+          <form.AppField name="password">
+            {(field) => (
+              <field.TextField
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                required
+              />
+            )}
+          </form.AppField>
           <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              type="email"
-              placeholder="example@email.com"
-              className={"placeholder:text-sm"}
-              required
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <Input id="password" type="password" required />
-          </Field>
-          <Field>
-            <Button type="submit">Log In</Button>
+            <form.AppForm>
+              <form.SubmitButton pendingLabel="Logging In...">
+                Log In
+              </form.SubmitButton>
+            </form.AppForm>
           </Field>
           <FieldSeparator>Or</FieldSeparator>
           <Field className="grid gap-4 sm:grid-cols-2">
