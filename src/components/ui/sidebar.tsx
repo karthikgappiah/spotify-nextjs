@@ -2,6 +2,7 @@
 
 import { SidebarIcon } from "@phosphor-icons/react";
 import { cva, type VariantProps } from "class-variance-authority";
+import Link from "next/link";
 import {
   type ComponentProps,
   type CSSProperties,
@@ -512,7 +513,7 @@ function SidebarMenuButton({
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
         data-size={size}
-        data-active={isActive}
+        data-active={isActive || undefined}
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
       />
@@ -521,7 +522,7 @@ function SidebarMenuButton({
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
         data-size={size}
-        data-active={isActive}
+        data-active={isActive || undefined}
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
       />
@@ -542,6 +543,36 @@ function SidebarMenuButton({
       {comp}
       <Tooltip placement="right" {...tooltip} />
     </TooltipTrigger>
+  );
+}
+
+function SidebarMenuButtonLink({
+  isActive = false,
+  variant = "default",
+  size = "default",
+  className,
+  onNavigate,
+  ...props
+}: ComponentProps<typeof Link> & {
+  isActive?: boolean;
+} & VariantProps<typeof sidebarMenuButtonVariants>) {
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  return (
+    <Link
+      data-slot="sidebar-menu-button"
+      data-sidebar="menu-button"
+      data-size={size}
+      data-active={isActive || undefined}
+      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      onNavigate={(event) => {
+        if (isMobile) {
+          setOpenMobile(false);
+        }
+        onNavigate?.(event);
+      }}
+      {...props}
+    />
   );
 }
 
@@ -619,9 +650,9 @@ function SidebarMenuSkeleton({
   );
 }
 
-function SidebarMenuSub({ className, ...props }: ComponentProps<"ul">) {
+function SidebarMenuSub({ className, ...props }: ComponentProps<"div">) {
   return (
-    <ul
+    <div
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
@@ -633,9 +664,9 @@ function SidebarMenuSub({ className, ...props }: ComponentProps<"ul">) {
   );
 }
 
-function SidebarMenuSubItem({ className, ...props }: ComponentProps<"li">) {
+function SidebarMenuSubItem({ className, ...props }: ComponentProps<"div">) {
   return (
-    <li
+    <div
       data-slot="sidebar-menu-sub-item"
       data-sidebar="menu-sub-item"
       className={cn("group/menu-sub-item relative", className)}
@@ -658,7 +689,7 @@ function SidebarMenuSubButton({
       data-slot="sidebar-menu-sub-button"
       data-sidebar="menu-sub-button"
       data-size={size}
-      data-active={isActive}
+      data-active={isActive || undefined}
       className={cn(
         "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-xl px-3 text-sidebar-foreground outline-hidden ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-sidebar-accent data-[size=md]:text-sm data-[size=sm]:text-xs data-active:text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
         className,
@@ -670,7 +701,7 @@ function SidebarMenuSubButton({
       data-slot="sidebar-menu-sub-button"
       data-sidebar="menu-sub-button"
       data-size={size}
-      data-active={isActive}
+      data-active={isActive || undefined}
       className={cn(
         "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-xl px-3 text-sidebar-foreground outline-hidden ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-3 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-active:bg-sidebar-accent data-[size=md]:text-sm data-[size=sm]:text-xs data-active:text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
         className,
@@ -695,6 +726,7 @@ export {
   SidebarMenuAction,
   SidebarMenuBadge,
   SidebarMenuButton,
+  SidebarMenuButtonLink,
   SidebarMenuItem,
   SidebarMenuSkeleton,
   SidebarMenuSub,

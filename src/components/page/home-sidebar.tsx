@@ -8,6 +8,7 @@ import {
   RadioIcon,
   ThumbsUpIcon,
 } from "@phosphor-icons/react";
+import { usePathname } from "next/navigation";
 import type { ComponentProps } from "react";
 import {
   Collapsible,
@@ -21,6 +22,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
+  SidebarMenuButtonLink,
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarRail,
@@ -29,14 +31,17 @@ import {
 const home = [
   {
     page: "For You",
+    href: "/home",
     icon: CompassIcon,
   },
   {
     page: "Liked Music",
+    href: "/home/liked",
     icon: ThumbsUpIcon,
   },
   {
     page: "Radio Stations",
+    href: "/home/radio",
     icon: RadioIcon,
   },
 ];
@@ -88,6 +93,8 @@ const playlists: TreeNode[] = [
   { type: "playlist", id: "on-repeat", name: "On Repeat" },
 ];
 export function HomeSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
   return (
     <Sidebar {...props}>
       <SidebarContent>
@@ -97,10 +104,13 @@ export function HomeSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {home.map((item) => (
                 <SidebarMenuItem key={item.page}>
-                  <SidebarMenuButton>
+                  <SidebarMenuButtonLink
+                    href={item.href}
+                    isActive={pathname === item.href}
+                  >
                     <item.icon />
                     {item.page}
-                  </SidebarMenuButton>
+                  </SidebarMenuButtonLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -121,30 +131,57 @@ export function HomeSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
     </Sidebar>
   );
 }
-function Tree({ item }: { item: TreeNode }) {
+function playlistHref(id: string) {
+  return `/home/playlists/${id}`;
+}
+
+function containsActivePlaylist(item: TreeNode, pathname: string): boolean {
   if (item.type === "playlist") {
+    return pathname === playlistHref(item.id);
+  }
+  return item.children.some((child) => containsActivePlaylist(child, pathname));
+}
+
+function Tree({ item }: { item: TreeNode }) {
+  const pathname = usePathname();
+
+  if (item.type === "playlist") {
+    const href = playlistHref(item.id);
+
     return (
-      <SidebarMenuButton className="data-[active=true]:bg-transparent">
-        <PlaylistIcon />
-        {item.name}
-      </SidebarMenuButton>
+      <SidebarMenuItem>
+        <SidebarMenuButtonLink href={href} isActive={pathname === href}>
+          <PlaylistIcon />
+          {item.name}
+        </SidebarMenuButtonLink>
+      </SidebarMenuItem>
     );
   }
+  const { children, name } = item;
+  const hidesActivePlaylist = containsActivePlaylist(item, pathname);
+
   return (
     <SidebarMenuItem>
       <Collapsible className="group/collapsible [&[data-expanded]>button>svg:first-child]:rotate-90">
-        <SidebarMenuButton slot="trigger">
-          <CaretRightIcon className="transition-transform" />
-          <FolderIcon />
-          {item.name}
-        </SidebarMenuButton>
-        <CollapsibleContent>
-          <SidebarMenuSub>
-            {item.children.map((child) => (
-              <Tree key={child.id} item={child} />
-            ))}
-          </SidebarMenuSub>
-        </CollapsibleContent>
+        {({ isExpanded }) => (
+          <>
+            <SidebarMenuButton
+              slot="trigger"
+              isActive={hidesActivePlaylist && !isExpanded}
+            >
+              <CaretRightIcon className="transition-transform" />
+              <FolderIcon />
+              {name}
+            </SidebarMenuButton>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                {children.map((child) => (
+                  <Tree key={child.id} item={child} />
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </>
+        )}
       </Collapsible>
     </SidebarMenuItem>
   );
