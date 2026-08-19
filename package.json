@@ -5,7 +5,7 @@
     "lint": "biome check --write",
     "lint:ci": "biome ci",
     "typecheck": "SKIP_ENV_VALIDATION=1 next typegen && tsc --noEmit",
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1",
     "build": "next build",
     "start": "next start"
   },

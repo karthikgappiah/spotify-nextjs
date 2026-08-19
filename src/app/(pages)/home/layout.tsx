@@ -1,17 +1,20 @@
 import type { ReactNode } from "react";
+import { SignOutButton } from "@/src/components/auth/sign-out-button";
 import { HomeSidebar } from "@/src/components/page/home-sidebar";
-import { Button } from "@/src/components/ui/button";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/src/components/ui/sidebar";
+import { requireSession } from "@/src/library/auth/session";
 
 type HomeLayoutProps = {
   children: ReactNode;
 };
 
-export default function HomeLayout({ children }: HomeLayoutProps) {
+export default async function HomeLayout({ children }: HomeLayoutProps) {
+  await requireSession();
+
   return (
     <SidebarProvider>
       <HomeSidebar />
@@ -21,9 +24,7 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
 
           <section className="grow">
             <div className="flex items-center justify-end space-x-2">
-              <Button variant="outline" type="button">
-                <p>Sign Out</p>
-              </Button>
+              <SignOutButton />
             </div>
           </section>
         </header>

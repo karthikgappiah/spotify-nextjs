@@ -1,5 +1,5 @@
 import { SpotifyLogoIcon } from "@phosphor-icons/react/dist/ssr";
-import { Button } from "@/src/components/ui/button";
+import { SignInButton } from "@/src/components/auth/sign-in-button";
 import { ModeToggle } from "@/src/components/ui/mode-toggle";
 
 export default function LandingPage() {
@@ -12,9 +12,7 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center space-x-2">
           <ModeToggle />
-          <Button variant="outline" type="button">
-            <p>Sign In</p>
-          </Button>
+          <SignInButton />
         </div>
       </header>
     </main>
