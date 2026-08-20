@@ -6,6 +6,7 @@ export const env = createEnv({
   extends: [vercel()],
   server: {
     BETTER_AUTH_URL: z.url(),
+    DATABASE_URL: z.url(),
     SPOTIFY_CLIENT_ID: z.string().min(1),
     SPOTIFY_CLIENT_SECRET: z.string().min(1),
   },

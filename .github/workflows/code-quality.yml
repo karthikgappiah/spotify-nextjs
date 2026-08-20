@@ -33,6 +33,7 @@ jobs:
           # so any present-but-wrong variable in Vercel will not be caught.
           BETTER_AUTH_SECRET: UFKwAo6mAjM7y3cnV5Bsmi08RBMfpfqIiPqi7Bo1908=
           BETTER_AUTH_URL: http://127.0.0.1:3000
+          DATABASE_URL: postgresql://placeholder:placeholder@127.0.0.1:5432/placeholder
           SPOTIFY_CLIENT_ID: placeholder-spotify-client-id
           SPOTIFY_CLIENT_SECRET: placeholder-spotify-client-secret
       - name: Run typecheck
