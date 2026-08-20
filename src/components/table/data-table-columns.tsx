@@ -2,7 +2,6 @@
 
 import { DotsThreeIcon, PlayIcon } from "@phosphor-icons/react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { z } from "zod";
 
 import { Button } from "@/src/components/ui/button";
 import {
@@ -11,19 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import type { Track } from "@/src/library/spotify/schema";
 import { Checkbox } from "../ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import type { DataTableFeatures } from "./data-table-features";
-
-export const TrackSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  album: z.string(),
-  artist: z.string(),
-  added_at: z.iso.datetime(),
-});
-
-export type Track = z.infer<typeof TrackSchema>;
 
 // Use `accessor` for data columns and `display` for columns without one.
 const ColumnHelper = createColumnHelper<DataTableFeatures, Track>();
