@@ -1,7 +1,7 @@
 import { Geist } from "next/font/google";
 import type { ReactNode } from "react";
 import { Providers } from "@/src/components/providers";
-import { FormDevtools } from "@/src/components/providers/form-devtools";
+import { Devtools } from "@/src/components/providers/devtools";
 import "@/src/styles/app.css";
 
 const geist = Geist({
@@ -18,8 +18,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className={geist.variable} suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col">
-        <Providers>{children}</Providers>
-        {process.env.NODE_ENV === "development" && <FormDevtools />}
+        <Providers>
+          {children}
+          {process.env.NODE_ENV === "development" && <Devtools />}
+        </Providers>
       </body>
     </html>
   );
